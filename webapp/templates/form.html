@@ -5,59 +5,72 @@
     <title>Formulaire de santé</title>
 </head>
 <body>
-    <h1>Formulaire de santé</h1>
-    <form method="POST">
-        <label>Gender:
-            <select name="gender" required>
-                <option value="Male" >Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </label><br><br>
-        <label>Age: <input type="number" name="age"  required></label><br><br>
-        <label>Hypertension:
-            <select name="hypertension" required>
-                <option value="0" >0 (No)</option>
-                <option value="1">1 (Yes)</option>
-            </select>
-        </label><br><br>
-        <label>Heart Disease:
-            <select name="heart_disease" required>
-                <option value="0">0 (No)</option>
-                <option value="1" >1 (Yes)</option>
-            </select>
-        </label><br><br>
-        <label>Ever Married:
-            <select name="ever_married" required>
-                <option value="Yes" >Yes</option>
-                <option value="No">No</option>
-            </select>
-        </label><br><br>
-        <label>Work Type:
-            <select name="work_type" required>
-                <option value="Private" >Private</option>
-                <option value="Self-employed">Self-employed</option>
-                <option value="Govt_job">Govt_job</option>
-                <option value="children">Children</option>
-                <option value="Never_worked">Never worked</option>
-            </select>
-        </label><br><br>
-        <label>Residence Type:
-            <select name="Residence_type" required>
-                <option value="Urban" >Urban</option>
-                <option value="Rural">Rural</option>
-            </select>
-        </label><br><br>
-        <label>Avg Glucose Level: <input type="number" step="0.01" name="avg_glucose_level" required></label><br><br>
-        <label>BMI: <input type="number" step="0.1" name="bmi" required></label><br><br>
-        <label>Smoking Status:
-            <select name="smoking_status" required>
-                <option value="formerly smoked" >formerly smoked</option>
-                <option value="never smoked">never smoked</option>
-                <option value="smokes">smokes</option>
-                <option value="Unknown">Unknown</option>
-            </select>
-        </label><br><br>
-        <button type="submit">Envoyer</button>
-    </form>
+<h1>Importer un fichier CSV ou remplir le formulaire</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="form_type" value="file_upload">
+    <label>Importer un fichier CSV:
+        <input type="file" name="file" accept=".csv">
+    </label>
+    <button type="submit">Importer</button>
+</form>
+
+<hr>
+
+<h2>Ou remplir manuellement :</h2>
+<form method="POST">
+    <input type="hidden" name="form_type" value="manual_entry">
+    <label>Gender:
+        <select name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </label><br><br>
+    <label>Age: <input type="number" name="age" required></label><br><br>
+    <label>Hypertension:
+        <select name="hypertension" required>
+            <option value="0">0 (No)</option>
+            <option value="1">1 (Yes)</option>
+        </select>
+    </label><br><br>
+    <label>Heart Disease:
+        <select name="heart_disease" required>
+            <option value="0">0 (No)</option>
+            <option value="1">1 (Yes)</option>
+        </select>
+    </label><br><br>
+    <label>Ever Married:
+        <select name="ever_married" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+    </label><br><br>
+    <label>Work Type:
+        <select name="work_type" required>
+            <option value="Private">Private</option>
+            <option value="Self-employed">Self-employed</option>
+            <option value="Govt_job">Govt_job</option>
+            <option value="children">Children</option>
+            <option value="Never_worked">Never worked</option>
+        </select>
+    </label><br><br>
+    <label>Residence Type:
+        <select name="Residence_type" required>
+            <option value="Urban">Urban</option>
+            <option value="Rural">Rural</option>
+        </select>
+    </label><br><br>
+    <label>Avg Glucose Level: <input type="number" step="0.01" name="avg_glucose_level" required></label><br><br>
+    <label>BMI: <input type="number" step="0.1" name="bmi" required></label><br><br>
+    <label>Smoking Status:
+        <select name="smoking_status" required>
+            <option value="formerly smoked">formerly smoked</option>
+            <option value="never smoked">never smoked</option>
+            <option value="smokes">smokes</option>
+            <option value="Unknown">Unknown</option>
+        </select>
+    </label><br><br>
+    <button type="submit">Envoyer</button>
+</form>
 </body>
 </html>
