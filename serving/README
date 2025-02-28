@@ -1,0 +1,4 @@
+Pour lancer, merci de réaliser les commandes suivantes : 
+
+docker build -t serving-api . 
+docker run -p 8080:8080 serving-api 
