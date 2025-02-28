@@ -1,6 +1,5 @@
 import pandas as pd
 from flask import Flask, render_template, request
-import os
 
 app = Flask(__name__)
 
@@ -10,6 +9,8 @@ def form():
     data = []
     if request.method == "POST":
         form_type = request.form.get("form_type")
+
+
         # Vérifier si un fichier a été uploadé
         if form_type == "file_upload" and "file" in request.files and request.files["file"].filename != "":
             file = request.files["file"]
@@ -21,7 +22,6 @@ def form():
                 data = df.to_dict(orient="records")
             except Exception as e:
                 return f"Erreur lors de la lecture du fichier : {str(e)}"
-
 
 
         # Vérifier si le formulaire manuel est soumis
