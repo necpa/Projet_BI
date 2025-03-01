@@ -1,40 +1,54 @@
 from fastapi import FastAPI, HTTPException
 import uvicorn
-import pickle
+import joblib
 import numpy as np
-import pandas as pd
 from pydantic import BaseModel
 
 # Définition du modèle de requête attendu
 class InputData(BaseModel):
-    features: list
+    gender: str
+    age: int
+    hypertension: int
+    heart_disease: int
+    ever_married: str
+    work_type: str
+    residence_type: str
+    avg_glucose_level: float
+    bmi: float | None = None
+    smoking_status: str
+
 
 # Initialisation de l'API
 app = FastAPI()
 
 # Chargement des modèles et scaler
 try:
-    with open("artifacts/model.pkl", "rb") as f:
-        model = pickle.load(f)
-    with open("artifacts/embedding.pkl", "rb") as f:
-        embedding_model = pickle.load(f)
-    with open("artifacts/scaler.pkl", "rb") as f:
-        scaler = pickle.load(f)
+    with open("../artifacts/model.joblib", "rb") as f:
+        model = joblib.load(f)
+    with open("../artifacts/embedding.joblib", "rb") as f:
+        embedding_model = joblib.load(f)
+    with open("../artifacts/scaler.joblib", "rb") as f:
+        scaler = joblib.load(f)
 except Exception as e:
     raise RuntimeError(f"Erreur lors du chargement des modèles: {e}")
 
 @app.post("/predict")
-def predict(data: InputData):
+async def predict(data: InputData):
     try:
-        # Conversion des features en array numpy
-        features = np.array(data.features).reshape(1, -1)
+        # Conversion de InpuData en numpy Array
+        dataArray = np.array([list(data.model_dump().values())])
+        print(dataArray)
         
         # Transformation des données avec le modèle d’embedding et le scaler
-        embedded_features = embedding_model.transform(features)
-        scaled_features = scaler.transform(embedded_features)
+        transfrom_data = embedding_model.transform(dataArray)
+        print(transfrom_data)
+
+        scaled_data = scaler.transform(transfrom_data)
+        print(scaled_data)
         
         # Prédiction
-        prediction = model.predict(scaled_features)
+        prediction = model.predict(scaled_data)
+        print(prediction)
         
         return {"prediction": prediction.tolist()}
     except Exception as e:

@@ -2,4 +2,5 @@ fastapi
 uvicorn
 numpy
 pandas
-pickle5
+joblib
+scikit-learn
