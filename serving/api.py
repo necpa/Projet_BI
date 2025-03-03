@@ -1,11 +1,12 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile
+import pandas as pd
 import uvicorn
 import joblib
 import numpy as np
 from pydantic import BaseModel
 
 # Définition du modèle de requête attendu
-class InputData(BaseModel):
+class FormData(BaseModel):
     gender: str
     age: int
     hypertension: int
@@ -33,7 +34,7 @@ except Exception as e:
     raise RuntimeError(f"Erreur lors du chargement des modèles: {e}")
 
 @app.post("/predict")
-async def predict(data: InputData):
+async def predict(data: FormData):
     try:
         # Conversion de InpuData en numpy Array
         dataArray = np.array([list(data.model_dump().values())])
@@ -52,7 +53,31 @@ async def predict(data: InputData):
         
         return {"prediction": prediction.tolist()}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Erreur lors de la prédiction: {e}")
+        raise HTTPException(status_code=500, detail=f"Erreur lors de la prédiction: {e}")
+
+
+@app.post("/predict/all")
+async def predict(file: UploadFile):
+    try:
+        # Conversion de InpuData en numpy Array
+        data = pd.read_csv(file.file)
+        dataArray = data.values
+        print(dataArray)
+
+        # Transformation des données avec le modèle d’embedding et le scaler
+        transfrom_data = embedding_model.transform(dataArray)
+        print(transfrom_data)
+
+        scaled_data = scaler.transform(transfrom_data)
+        print(scaled_data)
+
+        # Prédiction
+        prediction = model.predict(scaled_data)
+        print(prediction)
+
+        return {"prediction": prediction.tolist()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors de la prédiction: {e}")
 
 # Point d'entrée pour exécuter l'API en local
 if __name__ == "__main__":
