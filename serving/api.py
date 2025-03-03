@@ -18,6 +18,19 @@ class FormData(BaseModel):
     bmi: float | None = None
     smoking_status: str
 
+class FeedbackData(BaseModel):
+    gender: str
+    age: int
+    hypertension: int
+    heart_disease: int
+    ever_married: str
+    work_type: str
+    Residence_type: str
+    avg_glucose_level: float
+    bmi: float | None = None
+    smoking_status: str
+    target: int
+    prediction: int
 
 # Initialisation de l'API
 app = FastAPI()
@@ -78,6 +91,25 @@ async def predict(file: UploadFile):
         return {"prediction": prediction.tolist()}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de la prédiction: {e}")
+
+@app.post("/feedback")
+def feedback(data: FeedbackData):
+    try:
+        dataArray = np.array([list(data.model_dump().values())])
+        x = dataArray[:,:-2]
+        y = dataArray[:,-2:]
+        x_embedded = embedding_model.transform(x)
+        x_scaled = scaler.transform(x_embedded)
+        print(x_scaled)
+        with open("../data/prod_data.csv", "a") as file:
+            for row in range(len(x_scaled)):
+                for val in x_scaled[row]:
+                    file.write(str(val))
+                    file.write(",")
+                file.write(str(y[row][0]) + "," + str(y[row][1]) + "\n")
+        return {"feedback": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors du feedback: {e}")
 
 # Point d'entrée pour exécuter l'API en local
 if __name__ == "__main__":
