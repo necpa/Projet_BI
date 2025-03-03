@@ -1,49 +1,66 @@
 import os
 import pandas as pd
-from flask import Flask, render_template, request
+import requests
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+API_URL_SINGLE = "http://serving-api:8080/predict"
+API_URL_BULK = "http://serving-api:8080/predict/all"
+
+
 @app.route("/", methods=["GET", "POST"])
 def form():
     data = []
+    api_response = None  # Stockera la réponse de l'API
+
     if request.method == "POST":
         form_type = request.form.get("form_type")
 
-
-        # Vérifier si un fichier a été uploadé
+        # Si un fichier CSV est uploadé
         if form_type == "file_upload" and "file" in request.files and request.files["file"].filename != "":
             file = request.files["file"]
+            file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+            file.save(file_path)  # Sauvegarde temporaire du fichier
 
             try:
-                # Lire le fichier CSV
-                df = pd.read_csv(file)  # On peut ajouter sep=";" si le fichier utilise des ";"
-                df.drop(columns=["id", "stroke"], errors="ignore", inplace=True)
-                # Convertir en liste de dictionnaires pour affichage
-                data = df.to_dict(orient="records")
+                # Charger les données du CSV avant l'envoi
+                df = pd.read_csv(file_path)
+                data = df.to_dict(orient="records")  # Convertir en liste de dictionnaires
+
+                # Envoyer le fichier à l'API
+                with open(file_path, "rb") as f:
+                    response = requests.post(API_URL_BULK, files={"file": f})
+
+                api_response = response.json()
             except Exception as e:
-                return f"Erreur lors de la lecture du fichier : {str(e)}"
+                api_response = {"error": f"Erreur lors de l'envoi du fichier à l'API : {str(e)}"}
 
-
-        # Vérifier si le formulaire manuel est soumis
+        # Si l'utilisateur remplit le formulaire à la main
         elif form_type == "manual_entry":
             form_data = request.form.to_dict()
-            data.append(form_data)
 
-        # Supprimer "form_type" de chaque dictionnaire
-        for entry in data:
-            entry.pop("form_type", None)
+            # Nettoyage des types (conversion en int / float pour correspondre au modèle FastAPI)
+            form_data["age"] = int(form_data["age"])
+            form_data["hypertension"] = int(form_data["hypertension"])
+            form_data["heart_disease"] = int(form_data["heart_disease"])
+            form_data["avg_glucose_level"] = float(form_data["avg_glucose_level"])
+            form_data["bmi"] = float(form_data["bmi"]) if form_data["bmi"] else None
 
-        # Transformer `data` en CSV
-        if data:
-            output_file = os.path.join(UPLOAD_FOLDER, "output.csv")
-            df = pd.DataFrame(data)
-            df.to_csv(output_file, index=False, sep=";")
+            # Ajouter les données pour affichage
+            data = [form_data]
 
-        return render_template("result.html", data=data)
+            try:
+                # Envoyer les données à l'API
+                response = requests.post(API_URL_SINGLE, json=form_data)
+                api_response = response.json()
+            except Exception as e:
+                api_response = {"error": f"Erreur lors de l'envoi des données à l'API : {str(e)}"}
+
+        return render_template("result.html", data=data, api_response=api_response)
 
     return render_template("form.html")
 

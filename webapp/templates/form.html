@@ -1,76 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Formulaire de santé</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-header {
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>Importer un fichier CSV ou remplir le formulaire</h1>
+    <div class="container">
+        <div class="form-container">
+            <h1 class="text-center text-primary form-header">Importer un fichier CSV ou remplir le formulaire</h1>
 
-<form method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="form_type" value="file_upload">
-    <label>Importer un fichier CSV:
-        <input type="file" name="file" accept=".csv">
-    </label>
-    <button type="submit">Importer</button>
-</form>
+            <!-- Formulaire pour télécharger un fichier CSV -->
+            <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="form_type" value="file_upload">
+                <div class="mb-3">
+                    <label class="form-label">Importer un fichier CSV</label>
+                    <input type="file" class="form-control" name="file" accept=".csv">
+                </div>
+                <button type="submit" class="btn btn-primary">Importer</button>
+            </form>
 
-<hr>
+            <hr>
 
-<h2>Ou remplir manuellement :</h2>
-<form method="POST">
-    <input type="hidden" name="form_type" value="manual_entry">
-    <label>Gender:
-        <select name="gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
-    </label><br><br>
-    <label>Age: <input type="number" name="age" required></label><br><br>
-    <label>Hypertension:
-        <select name="hypertension" required>
-            <option value="0">0 (No)</option>
-            <option value="1">1 (Yes)</option>
-        </select>
-    </label><br><br>
-    <label>Heart Disease:
-        <select name="heart_disease" required>
-            <option value="0">0 (No)</option>
-            <option value="1">1 (Yes)</option>
-        </select>
-    </label><br><br>
-    <label>Ever Married:
-        <select name="ever_married" required>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
-    </label><br><br>
-    <label>Work Type:
-        <select name="work_type" required>
-            <option value="Private">Private</option>
-            <option value="Self-employed">Self-employed</option>
-            <option value="Govt_job">Govt_job</option>
-            <option value="children">Children</option>
-            <option value="Never_worked">Never worked</option>
-        </select>
-    </label><br><br>
-    <label>Residence Type:
-        <select name="Residence_type" required>
-            <option value="Urban">Urban</option>
-            <option value="Rural">Rural</option>
-        </select>
-    </label><br><br>
-    <label>Avg Glucose Level: <input type="number" step="0.01" name="avg_glucose_level" required></label><br><br>
-    <label>BMI: <input type="number" step="0.1" name="bmi" required></label><br><br>
-    <label>Smoking Status:
-        <select name="smoking_status" required>
-            <option value="formerly smoked">formerly smoked</option>
-            <option value="never smoked">never smoked</option>
-            <option value="smokes">smokes</option>
-            <option value="Unknown">Unknown</option>
-        </select>
-    </label><br><br>
-    <button type="submit">Envoyer</button>
-</form>
+            <h2 class="text-center text-secondary">Ou remplir manuellement :</h2>
+
+            <!-- Formulaire pour entrer les données manuellement -->
+            <form method="POST">
+                <input type="hidden" name="form_type" value="manual_entry">
+                <div class="mb-3">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select" name="gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-control" name="age" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Hypertension</label>
+                    <select class="form-select" name="hypertension" required>
+                        <option value="0">0 (No)</option>
+                        <option value="1">1 (Yes)</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Heart Disease</label>
+                    <select class="form-select" name="heart_disease" required>
+                        <option value="0">0 (No)</option>
+                        <option value="1">1 (Yes)</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ever Married</label>
+                    <select class="form-select" name="ever_married" required>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Work Type</label>
+                    <select class="form-select" name="work_type" required>
+                        <option value="Private">Private</option>
+                        <option value="Self-employed">Self-employed</option>
+                        <option value="Govt_job">Govt_job</option>
+                        <option value="children">Children</option>
+                        <option value="Never_worked">Never worked</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Residence Type</label>
+                    <select class="form-select" name="Residence_type" required>
+                        <option value="Urban">Urban</option>
+                        <option value="Rural">Rural</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Avg Glucose Level</label>
+                    <input type="number" class="form-control" step="0.01" name="avg_glucose_level" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">BMI</label>
+                    <input type="number" class="form-control" step="0.1" name="bmi" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Smoking Status</label>
+                    <select class="form-select" name="smoking_status" required>
+                        <option value="formerly smoked">formerly smoked</option>
+                        <option value="never smoked">never smoked</option>
+                        <option value="smokes">smokes</option>
+                        <option value="Unknown">Unknown</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success btn-custom">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

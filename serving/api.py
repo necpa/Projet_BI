@@ -13,7 +13,7 @@ class FormData(BaseModel):
     heart_disease: int
     ever_married: str
     work_type: str
-    residence_type: str
+    Residence_type: str
     avg_glucose_level: float
     bmi: float | None = None
     smoking_status: str

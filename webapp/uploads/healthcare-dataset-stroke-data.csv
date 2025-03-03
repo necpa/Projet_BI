@@ -1,0 +1,30 @@
+gender,age,hypertension,heart_disease,ever_married,work_type,Residence_type,avg_glucose_level,bmi,smoking_status
+Male,67,0,1,Yes,Private,Urban,228.69,36.6,formerly smoked
+Female,61,0,0,Yes,Self-employed,Rural,202.21,N/A,never smoked
+Male,80,0,1,Yes,Private,Rural,105.92,32.5,never smoked
+Female,49,0,0,Yes,Private,Urban,171.23,34.4,smokes
+Female,79,1,0,Yes,Self-employed,Rural,174.12,24,never smoked
+Male,81,0,0,Yes,Private,Urban,186.21,29,formerly smoked
+Male,74,1,1,Yes,Private,Rural,70.09,27.4,never smoked
+Female,69,0,0,No,Private,Urban,94.39,22.8,never smoked
+Female,59,0,0,Yes,Private,Rural,76.15,N/A,Unknown
+Female,78,0,0,Yes,Private,Urban,58.57,24.2,Unknown
+Female,81,1,0,Yes,Private,Rural,80.43,29.7,never smoked
+Female,61,0,1,Yes,Govt_job,Rural,120.46,36.8,smokes
+Female,54,0,0,Yes,Private,Urban,104.51,27.3,smokes
+Male,78,0,1,Yes,Private,Urban,219.84,N/A,Unknown
+Female,79,0,1,Yes,Private,Urban,214.09,28.2,never smoked
+Female,50,1,0,Yes,Self-employed,Rural,167.41,30.9,never smoked
+Male,64,0,1,Yes,Private,Urban,191.61,37.5,smokes
+Male,75,1,0,Yes,Private,Urban,221.29,25.8,smokes
+Female,60,0,0,No,Private,Urban,89.22,37.8,never smoked
+Male,57,0,1,No,Govt_job,Urban,217.08,N/A,Unknown
+Female,71,0,0,Yes,Govt_job,Rural,193.94,22.4,smokes
+Female,52,1,0,Yes,Self-employed,Urban,233.29,48.9,never smoked
+Female,79,0,0,Yes,Self-employed,Urban,228.7,26.6,never smoked
+Male,82,0,1,Yes,Private,Rural,208.3,32.5,Unknown
+Male,71,0,0,Yes,Private,Urban,102.87,27.2,formerly smoked
+Male,80,0,0,Yes,Self-employed,Rural,104.12,23.5,never smoked
+Female,65,0,0,Yes,Private,Rural,100.98,28.2,formerly smoked
+Male,58,0,0,Yes,Private,Rural,189.84,N/A,Unknown
+Male,69,0,1,Yes,Self-employed,Urban,195.23,28.3,smokes
