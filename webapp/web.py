@@ -32,13 +32,13 @@ def form():
             try:
                 # Charger les données du CSV avant l'envoi
                 df = pd.read_csv(file_path)
-                data = df.to_dict(orient="records")  # Convertir en liste de dictionnaires
 
                 # Vérifier si la colonne "stroke" existe
                 if "stroke" in df.columns:
                     stroke_values = df["stroke"].tolist()  # Extraire les valeurs de la colonne "stroke"
                     df = df.drop(columns=["stroke"])  # Supprimer la colonne "stroke"
 
+                data = df.to_dict(orient="records")  # Convertir en liste de dictionnaires
                 # Sauvegarder un fichier temporaire sans la colonne "stroke"
                 temp_file_path = os.path.join(UPLOAD_FOLDER, "temp_without_stroke.csv")
                 df.to_csv(temp_file_path, index=False)  # Réécrire le CSV sans la colonne stroke
@@ -78,7 +78,7 @@ def feedback():
         # Récupération des clés du formulaire en excluant les colonnes target et prediction
         data_keys = ["gender", "age", "hypertension", "heart_disease", "ever_married", "work_type", "Residence_type", "avg_glucose_level", "bmi", "smoking_status", "target", "prediction"]
         # Nombre total de lignes dans le formulaire
-        num_rows = len(request.form) // (len(data_keys) + 2)  # En prenant en compte target et prediction
+        num_rows = len(request.form) // len(data_keys)# En prenant en compte target et prediction
 
         # Parcours de chaque ligne (chaque entrée)
         for i in range(num_rows):

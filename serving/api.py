@@ -56,18 +56,14 @@ async def predict(data: FormData):
     try:
         # Conversion de InpuData en numpy Array
         dataArray = np.array([list(data.model_dump().values())])
-        print(dataArray)
         
         # Transformation des données avec le modèle d’embedding et le scaler
         transfrom_data = embedding_model.transform(dataArray)
-        print(transfrom_data)
 
         scaled_data = scaler.transform(transfrom_data)
-        print(scaled_data)
         
         # Prédiction
         prediction = model.predict(scaled_data)
-        print(prediction)
         
         return {"prediction": prediction.tolist()}
     except Exception as e:
@@ -80,18 +76,14 @@ async def predict(file: UploadFile):
         # Conversion de InpuData en numpy Array
         data = pd.read_csv(file.file)
         dataArray = data.values
-        print(dataArray)
 
         # Transformation des données avec le modèle d’embedding et le scaler
         transfrom_data = embedding_model.transform(dataArray)
-        print(transfrom_data)
 
         scaled_data = scaler.transform(transfrom_data)
-        print(scaled_data)
 
         # Prédiction
         prediction = model.predict(scaled_data)
-        print(prediction)
 
         return {"prediction": prediction.tolist()}
     except Exception as e:
@@ -100,12 +92,14 @@ async def predict(file: UploadFile):
 @app.post("/feedback")
 def feedback(data: FeedbackDatas):
     try:
-        dataArray = np.array([list(data.model_dump().values())])
+        print(data)
+        dataArray = np.array([list(k.model_dump().values()) for k in data.data])
+        print(dataArray)
         x = dataArray[:,:-2]
         y = dataArray[:,-2:]
         x_embedded = embedding_model.transform(x)
         x_scaled = scaler.transform(x_embedded)
-        print(x_scaled)
+
         with open("../data/prod_data.csv", "a") as file:
             for row in range(len(x_scaled)):
                 for val in x_scaled[row]:
