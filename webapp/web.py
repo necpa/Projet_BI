@@ -8,8 +8,9 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-API_URL_SINGLE = "http://serving-api:8080/predict"
-API_URL_BULK = "http://serving-api:8080/predict/all"
+API_URL = os.environ.get("API_URL","http://serving-api:8080")
+API_URL_SINGLE = API_URL + "/predict"
+API_URL_BULK = API_URL + "/predict/all"
 
 
 @app.route("/", methods=["GET", "POST"])

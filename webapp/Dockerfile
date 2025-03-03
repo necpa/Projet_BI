@@ -4,6 +4,7 @@ COPY . .
 COPY requirements.txt .
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
+ENV API_URL="http://serving-api:8080"
 ENV FLASK_APP=web.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=8081
