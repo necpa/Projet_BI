@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Résultats</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table-responsive {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-primary">Résultats de la Prédiction</h1>
+
+        {% if error %}
+            <div class="alert alert-danger text-center">
+                <strong>Erreur :</strong> {{ error.error }}
+            </div>
+
+        {% else %}
+
+            {% if data %}
+                <form action="/feedback" method="post">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    {% for key in data[0].keys() %}
+                                        <th>{{ key }}</th>
+                                    {% endfor %}
+                                    <th>Target</th>
+                                    <th>Prédiction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in range(data|length) %}
+                                    <tr>
+                                        {% for key in data[i] %}
+                                            <td>
+                                                <input type="text" value="{{ data[i][key] }}" disabled>
+                                                <input type="hidden" name="{{ key }}_{{ i }}" value="{{ data[i][key] }}">
+                                            </td>
+                                        {% endfor %}
+                                        <td>
+                                            <input type="number" name="target_{{ i }}" value="{{ target[i] if target else '' }}" min="0" max="1" required>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="prediction_{{ i }}" value="{{ api_response[i] if api_response else '' }}" min="0" max="1" required>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning btn-custom">Envoyer le Feedback</button>
+                    </div>
+                </form>
+            {% else %}
+                <div class="alert alert-warning text-center">
+                    <p>Aucune donnée disponible.</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <div class="text-center">
+            <a href="/" class="btn btn-primary btn-custom">Retour</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

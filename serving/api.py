@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import FastAPI, HTTPException, UploadFile
 import pandas as pd
 import uvicorn
@@ -31,6 +33,9 @@ class FeedbackData(BaseModel):
     smoking_status: str
     target: int
     prediction: int
+
+class FeedbackDatas(BaseModel):
+    data: List[FeedbackData]
 
 # Initialisation de l'API
 app = FastAPI()
@@ -93,7 +98,7 @@ async def predict(file: UploadFile):
         raise HTTPException(status_code=500, detail=f"Erreur lors de la prédiction: {e}")
 
 @app.post("/feedback")
-def feedback(data: FeedbackData):
+def feedback(data: FeedbackDatas):
     try:
         dataArray = np.array([list(data.model_dump().values())])
         x = dataArray[:,:-2]
