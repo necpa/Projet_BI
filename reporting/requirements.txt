@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 pandas
 evidently
+=======
+evidently
+scikit-learn
+>>>>>>> ce7455d26707c607cab429c4b8b6566b1f03afbc

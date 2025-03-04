@@ -1,5 +1,6 @@
 version: '3.8'
 
+<<<<<<< HEAD
 services:
   evidently:
     build: .
@@ -8,3 +9,22 @@ services:
       - ./reporting:/app/reporting
     ports:
       - "8082:8082"
+=======
+networks:
+  serving_prod_net:
+    external: true
+
+services:
+  reporting:
+    container_name: reporting
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../data:/data
+      - ../artifacts:/artifacts
+    ports:
+      - "8082:8082"
+    networks:
+      - serving_prod_net
+>>>>>>> ce7455d26707c607cab429c4b8b6566b1f03afbc
