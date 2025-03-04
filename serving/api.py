@@ -106,9 +106,22 @@ def feedback(data: FeedbackDatas):
                     file.write(str(val))
                     file.write(",")
                 file.write(str(y[row][0]) + "," + str(y[row][1]) + "\n")
+                print(f"Row written: {x_scaled[row]}, {y[row][0]}, {y[row][1]}")  # Log each row written
+
         return {"feedback": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors du feedback: {e}")
+
+
+@app.get("/feedback/data")
+def get_feedback_data():
+    try:
+        with open("../data/prod_data.csv", "r") as file:
+            content = file.read()
+        return {"data": content}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erreur lors de la lecture du fichier: {e}")
+    
 
 # Point d'entrée pour exécuter l'API en local
 if __name__ == "__main__":
