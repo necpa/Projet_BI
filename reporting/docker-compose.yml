@@ -1,11 +1,12 @@
 version: '3.8'
 
 services:
-  evidently:
-    build: .
+  reporting:
+    container_name: reporting
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - ../data:/data
-      - ./reporting:/app/reporting
     ports:
       - "8082:8082"
-

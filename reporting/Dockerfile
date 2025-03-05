@@ -1,15 +1,10 @@
-FROM python:3.12-slim
-
+FROM python:3.10-slim
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
 
-# Copier le script shell
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
 
-# Utiliser le script shell comme point d'entrée
-CMD ["/app/entrypoint.sh"]
+CMD python project.py && evidently ui --host 0.0.0.0 --port 8082

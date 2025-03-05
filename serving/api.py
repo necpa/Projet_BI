@@ -2,6 +2,7 @@ from typing import List
 
 from fastapi import FastAPI, HTTPException, UploadFile
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 import uvicorn
 import joblib
 import numpy as np
@@ -50,6 +51,29 @@ try:
         scaler = joblib.load(f)
 except Exception as e:
     raise RuntimeError(f"Erreur lors du chargement des modèles: {e}")
+
+RETRAIN_THRESHOLD = 100
+
+def retrain_model():
+    global model
+    try:
+        ref_data = pd.read_csv("../data/ref_data.csv")
+        prod_data = pd.read_csv("../data/prod_data.csv")
+        combined_data = pd.concat([ref_data, prod_data], ignore_index=True)
+
+        X = combined_data.drop(columns=["target", "prediction"])
+        y = combined_data["target"]
+
+        model = RandomForestClassifier()
+        model.fit(X, y)
+
+        joblib.dump(model, "../artifacts/model.joblib")
+
+        model = model
+        print("Model retrained and updated successfully.")
+    except Exception as e:
+        raise RuntimeError(f"Erreur lors du réentraînement du modèle: {e}")
+    
 
 @app.post("/predict")
 async def predict(data: FormData):
@@ -107,6 +131,12 @@ def feedback(data: FeedbackDatas):
                     file.write(",")
                 file.write(str(y[row][0]) + "," + str(y[row][1]) + "\n")
                 print(f"Row written: {x_scaled[row]}, {y[row][0]}, {y[row][1]}")  # Log each row written
+
+
+        # Check if retraining is needed
+        prod_data = pd.read_csv("../data/prod_data.csv")
+        if len(prod_data) % RETRAIN_THRESHOLD == 0:
+            retrain_model()
 
         return {"feedback": "success"}
     except Exception as e:
